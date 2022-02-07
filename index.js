@@ -77,10 +77,28 @@ app.get("/profile",(req,res)=>{
     //if logged in, show your stuff
     //if not logged in, send a 403 Forbbiden error
     if(req.session.user){
-
       res.send(`welcome to the club ${req.session.user.username}!`)
     } else {
         res.status(403).json({msg:"login first dood!"})
+    }
+})
+
+app.post("/api/tweets",(req,res)=>{
+    try{
+
+        if(req.session.user){
+            Tweet.create({
+                body:req.body.body,
+                UserId:req.session.user.id
+            }).then(newTweet=>{
+                res.json(newTweet)
+            })
+        } else {
+            res.status(403).json({msg:"login first dood!"})
+        }
+    }catch(err){
+        console.log(err);
+        res.status(500).json({err})
     }
 })
 
