@@ -36,7 +36,7 @@ const {User,Tweet} = require("../models")
 
 const seed = async ()=>{
     await sequelize.sync({force:true});
-    await User.bulkCreate(users);
+    await User.bulkCreate(users,{individualHooks:true});
     await Tweet.bulkCreate(tweets);
     console.log("all seeded!")
     process.exit(0);
