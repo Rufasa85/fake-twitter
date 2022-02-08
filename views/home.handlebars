@@ -1,6 +1,6 @@
 <h1>Hello everyone!</h1>
 <ul>
 {{#each allTweets}}
-    <li>{{body}}</li>
+    <li><strong><a href="/user/{{User.id}}">{{User.username}}</a></strong>: {{body}}</li>
 {{/each}}
 </ul>
