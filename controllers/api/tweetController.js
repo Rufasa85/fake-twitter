@@ -4,7 +4,6 @@ const {User,Tweet} = require('../../models');
 
 router.post("/",(req,res)=>{
     try{
-
         if(req.session.user){
             Tweet.create({
                 body:req.body.body,

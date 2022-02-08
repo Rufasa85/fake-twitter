@@ -33,4 +33,9 @@ router.post("/login",(req,res)=>{
     })
 })
 
+router.get("/logout",(req,res)=>{
+    req.session.destroy();
+    res.send("logged out!")
+})
+
 module.exports = router;

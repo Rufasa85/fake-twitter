@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const {User,Tweet} = require("../models")
 
 const apiRoutes = require("./api")
 router.use("/api",apiRoutes)
 
 router.get('/',(req,res)=>{
-    res.send("hello everyone!")
+    Tweet.findAll().then(tweets=>{
+        console.log(tweets);
+        const tweetRaw = tweets.map(tweet=>tweet.get({plain:true}))
+        console.log("===========================")
+        console.log(tweetRaw)
+        res.render("home",{allTweets:tweetRaw})
+    })
 })
 
 router.get("/showsessions",(req,res)=>{
