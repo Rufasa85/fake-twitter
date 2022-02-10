@@ -20,7 +20,10 @@ router.get("/", (req, res) => {
 router.get("/user/:id", async (req, res) => {
   try {
     const userUnique = await User.findByPk(req.params.id, {
-      include: [Tweet]
+      include: [{
+        model:Tweet,
+        include:[Tag,User]
+      }]
     });
     const user = userUnique.get({ plain: true });
     res.render("user", user);
@@ -74,9 +77,15 @@ router.get("/profile",(req, res) => {
 );
 
 router.get("/login", (req, res) => {
+  if(req.session.user){
+    return res.redirect("profile")
+  }
   res.render("login");
 });
 router.get("/signup", (req, res) => {
+  if(req.session.user){
+    return res.redirect("profile")
+  }
   res.render("signup");
 });
 

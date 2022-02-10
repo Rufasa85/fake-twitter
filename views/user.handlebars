@@ -1,12 +1,18 @@
 <h1>Welcome to {{username}}'s page!</h1>
-<ul>
-   {{#each Tweets}}
-   <li>
 
-      {{body}}
-         {{#each Tags}}
-        <a href="/tag/{{id}}"><button>{{name}}</button></a>
+   {{#each Tweets}}
+   <div class="tweetBox">
+    <div class="imageBox">
+    </div>
+    <div class="content">
+        <h2><a href="/user/{{User.id}}">{{User.username}}</a>{{formatDate createdAt}}</h2>
+        <p>{{body}}</p>
+        <div class="tagsDiv">
+        {{#each Tags}}
+            <a href="/tag/{{id}}"><button>{{name}}</button></a>
         {{/each}}
+        </div>
+    </div>
+</div>
     {{/each}}
-   </li>
-</ul>
+ 

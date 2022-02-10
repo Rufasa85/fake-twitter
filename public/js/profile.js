@@ -101,3 +101,16 @@ allDelTagBtns.forEach(delBtn=>{
         })
     })
 })
+const allEditBtns = document.querySelectorAll(".editBtn")
+allEditBtns.forEach(editBtn=>{
+    editBtn.addEventListener("click",e=>{
+      const hidden = editBtn.parentElement.querySelectorAll(".hide");
+      hidden.forEach(thing=>{
+        thing.classList.remove("hide")
+      })
+      const toHides = editBtn.parentElement.querySelectorAll(".toHide");
+      toHides.forEach(thing=>{
+        thing.classList.add("hide")
+      })
+    })
+})

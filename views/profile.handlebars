@@ -4,15 +4,20 @@
     <button>Tweet!</button>
 </form>
 <h2>Your tweets:</h2>
-<ul>
-    <datalist id="allTags">
-        {{#each tags}}
-        <option>{{name}}</option>
-        {{/each}}
-    </datalist>
-    {{#each user.Tweets}}
-    <li>{{body}} <button class="editBtn">Edit</button> <button class="delBtn" data-id={{id}}>Delete</button>
-        <div class="editForm">
+<datalist id="allTags">
+    {{#each tags}}
+    <option>{{name}}</option>
+    {{/each}}
+</datalist>
+{{#each user.Tweets}}
+<div class="tweetBox">
+    <div class="imageBox">
+    </div>
+    <div class="content">
+        <h2><a href="/user/{{../user.id}}">{{../user.username}}</a>{{formatDate createdAt}}</h2>
+        <p class="toHide">{{body}}</p>
+        <button class="editBtn">Edit</button> <button class="delBtn" data-id={{id}}>Delete</button>
+        <div class="editForm hide">
 
             <h3>Edit this Tweet</h3>
             <form action="editTweetForm">
@@ -20,20 +25,22 @@
                 <textarea>{{body}}</textarea>
                 <button>Update!</button>
             </form>
+            <form class="addTagForm">
+                <input type="hidden" value={{id}}>
+                <input type="text" list="allTags" placeholder="tag">
+                <button>Add Tag</button>
+            </form>
 
         </div>
-        <form class="addTagForm">
-            <input type="hidden" value={{id}}>
-            <input type="text" list="allTags" placeholder="tag">
-            <button>Add Tag</button>
-        </form>
+        <div class="tagsDiv">
         {{#each Tags}}
-        <a href="/tag/{{id}}"><button>{{name}}</button></a>
-        <button class="delTag" data-tagid={{id}} data-tweetid={{../id}}>Remove {{name}}</button>
+            <a href="/tag/{{id}}" class="toHide"><button>{{name}}</button></a>
+            <button class="delTag hide" data-tagid={{id}} data-tweetid={{../id}}>Remove {{name}}</button>
         {{/each}}
-        <hr>
-    </li>
-    {{/each}}
-</ul>
+        </div>
+    </div>
+</div>
+{{/each}}
+
 
 <script src="/js/profile.js"></script>
