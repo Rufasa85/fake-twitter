@@ -14,8 +14,9 @@ router.get("/", (req, res) => {
       res.status(500).json({ msg: "uh oh!", err });
     });
 });
+
 router.get("/:id", (req, res) => {
-  Tweet.findByPk(req.params.id,{
+  Tweet.findByPk(req.params.id, {
     include: [Tag]
   })
     .then(dbTweets => {
@@ -45,21 +46,77 @@ router.post("/", (req, res) => {
   }
 });
 
+router.put("/:id", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ msg: "login friendo!" });
+  }
+  Tweet.findByPk(req.params.id).then(foundTweet => {
+    if (!foundTweet) {
+      return res.status(404).json({ msg: "no such tweet!" });
+    }
+    if (foundTweet.UserId !== req.session.user.id) {
+      return res.status(403).json({ msg: "not your tweet!" });
+    }
+    Tweet.update(
+      {
+        body: req.body.body
+      },
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    ).then(data => {
+      return res.json(data);
+    });
+  });
+});
+
+router.delete("/:id", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ msg: "login friendo!" });
+  }
+  Tweet.findByPk(req.params.id).then(foundTweet => {
+    if (!foundTweet) {
+      return res.status(404).json({ msg: "no such tweet!" });
+    }
+    if (foundTweet.UserId !== req.session.user.id) {
+      return res.status(403).json({ msg: "not your tweet!" });
+    }
+    Tweet.destroy(
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    ).then(data => {
+      return res.json(data);
+    });
+  });
+});
+
 router.post("/addtag/:tweetid", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ msg: "login friendo!" });
+  }
   Tweet.findByPk(req.params.tweetid).then(foundTweet => {
     if (!foundTweet) {
       return res.status(404).json({ msg: "no such tweet!" });
-    } else {
+    } 
+    if(req.session.user.id!==foundTweet.UserId){
+      return res.status(403).json({ msg: "not your tweet!" });
+    }
+    else {
       Tag.findOne({
         where: {
           name: req.body.tagname
         }
       }).then(foundTag => {
         if (!foundTag) {
-          Tag.create({name:req.body.tagname}).then(newTag=>{
+          Tag.create({ name: req.body.tagname }).then(newTag => {
             foundTweet.addTag(newTag);
             return res.json(foundTweet);
-          })
+          });
         } else {
           foundTweet.addTag(foundTag);
           res.json(foundTweet);
@@ -70,9 +127,15 @@ router.post("/addtag/:tweetid", (req, res) => {
 });
 
 router.delete("/removeTag/:tweetid/:tagid", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ msg: "login friendo!" });
+  }
   Tweet.findByPk(req.params.tweetid).then(foundTweet => {
     if (!foundTweet) {
       return res.status(404).json({ msg: "no such tweet!" });
+    } 
+    if(req.session.user.id!==foundTweet.UserId){
+      return res.status(403).json({ msg: "not your tweet!" });
     } else {
       foundTweet.removeTag(req.params.tagid);
       res.json(foundTweet);

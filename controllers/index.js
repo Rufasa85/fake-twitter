@@ -30,6 +30,22 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
+router.get("/tag/:id", async (req, res) => {
+  try {
+    const tagUnique = await Tag.findByPk(req.params.id, {
+      include: [{
+        model:Tweet,
+        include:[User,Tag]
+      }]
+    });
+    const tag = tagUnique.get({ plain: true });
+    res.render("tag", tag);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
 router.get("/showsessions", (req, res) => {
   res.json(req.session);
 });

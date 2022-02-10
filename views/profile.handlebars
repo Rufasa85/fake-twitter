@@ -5,21 +5,32 @@
 </form>
 <h2>Your tweets:</h2>
 <ul>
-            <datalist id="allTags">
-                {{#each tags}}
-                    <option>{{name}}</option>
-                {{/each}}
-            </datalist>
+    <datalist id="allTags">
+        {{#each tags}}
+        <option>{{name}}</option>
+        {{/each}}
+    </datalist>
     {{#each user.Tweets}}
-    <li>{{body}}
+    <li>{{body}} <button class="editBtn">Edit</button> <button class="delBtn" data-id={{id}}>Delete</button>
+        <div class="editForm">
+
+            <h3>Edit this Tweet</h3>
+            <form action="editTweetForm">
+                <input type="hidden" value="{{id}}">
+                <textarea>{{body}}</textarea>
+                <button>Update!</button>
+            </form>
+
+        </div>
         <form class="addTagForm">
             <input type="hidden" value={{id}}>
             <input type="text" list="allTags" placeholder="tag">
             <button>Add Tag</button>
         </form>
         {{#each Tags}}
-        <button>{{name}}</button>
+        <a href="/tag/{{id}}"><button>{{name}}</button></a>
         {{/each}}
+        <hr>
     </li>
     {{/each}}
 </ul>

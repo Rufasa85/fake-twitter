@@ -1,0 +1,12 @@
+<h1>Tweets tagged with {{name}}</h1>
+<ul>
+    {{#each Tweets}}
+    <li>
+
+         <strong><a href="/user/{{User.id}}">{{User.username}}</a></strong>: {{body}}
+         {{#each Tags}}
+        <a href="/tag/{{id}}"><button>{{name}}</button></a>
+        {{/each}}
+    </li>
+    {{/each}}
+</ul>

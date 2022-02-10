@@ -1,11 +1,13 @@
 <h1>Hello everyone!</h1>
 <ul>
-{{#each allTweets}}
+    {{#each allTweets}}
     <li>
         <strong><a href="/user/{{User.id}}">{{User.username}}</a></strong>: {{body}}
+
         {{#each Tags}}
-        <button>{{name}}</button>
+        <a href="/tag/{{id}}"><button>{{name}}</button></a>
         {{/each}}
-        </li>
-{{/each}}
+
+    </li>
+    {{/each}}
 </ul>

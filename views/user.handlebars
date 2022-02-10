@@ -1,6 +1,12 @@
 <h1>Welcome to {{username}}'s page!</h1>
 <ul>
-    {{#each Tweets}}
-        <li>{{body}}</li>
+   {{#each Tweets}}
+   <li>
+
+      {{body}}
+         {{#each Tags}}
+        <a href="/tag/{{id}}"><button>{{name}}</button></a>
+        {{/each}}
     {{/each}}
+   </li>
 </ul>
