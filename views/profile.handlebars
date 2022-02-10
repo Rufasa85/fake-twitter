@@ -29,6 +29,7 @@
         </form>
         {{#each Tags}}
         <a href="/tag/{{id}}"><button>{{name}}</button></a>
+        <button class="delTag" data-tagid={{id}} data-tweetid={{../id}}>Remove {{name}}</button>
         {{/each}}
         <hr>
     </li>

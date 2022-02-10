@@ -85,3 +85,19 @@ allDelBtns.forEach(delBtn=>{
         })
     })
 })
+
+const allDelTagBtns = document.querySelectorAll(".delTag")
+allDelTagBtns.forEach(delBtn=>{
+    delBtn.addEventListener("click",e=>{
+        const {tweetid,tagid} = delBtn.dataset
+        fetch(`/api/tweets/removetag/${tweetid}/${tagid}`,{
+            method:"DELETE"
+        }).then(res=>{
+            if(res.ok){
+               location.reload()
+            } else {
+                alert("trumpet sound")
+            }
+        })
+    })
+})
