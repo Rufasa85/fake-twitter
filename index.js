@@ -4,13 +4,11 @@ const sequelize = require('./config/connection');
 const session = require('express-session')
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const exphbs = require("express-handlebars")
-const helpers = require("./utils/helpers")
 
 // Sets up the Express App
 // =============================================================
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -18,9 +16,8 @@ app.use(express.json());
 
 app.use(express.static("public"))
 
-const hbs = exphbs.create({
-    helpers
-});
+const hbs = exphbs.create({});
+
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 

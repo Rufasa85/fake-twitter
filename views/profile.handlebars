@@ -1,7 +1,27 @@
-<h1>Welcome back {{username}}!</h1>
+<h1>Welcome back {{user.username}}!</h1>
+<form id="newTweet">
+    <textarea id="newTweetInput" placeholder="new tweet here...."></textarea>
+    <button>Tweet!</button>
+</form>
 <h2>Your tweets:</h2>
 <ul>
-    {{#each Tweets}}
-        <li>{{body}}</li>
+            <datalist id="allTags">
+                {{#each tags}}
+                    <option>{{name}}</option>
+                {{/each}}
+            </datalist>
+    {{#each user.Tweets}}
+    <li>{{body}}
+        <form class="addTagForm">
+            <input type="hidden" value={{id}}>
+            <input type="text" list="allTags" placeholder="tag">
+            <button>Add Tag</button>
+        </form>
+        {{#each Tags}}
+        <button>{{name}}</button>
+        {{/each}}
+    </li>
     {{/each}}
 </ul>
+
+<script src="/js/profile.js"></script>

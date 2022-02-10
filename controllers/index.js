@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { User, Tweet } = require("../models");
-const withAuth = require("../utils/withAuth")
+const { User, Tweet,Tag } = require("../models");
 
 const apiRoutes = require("./api");
 router.use("/api", apiRoutes);
 
 router.get("/", (req, res) => {
   Tweet.findAll({
-    include: [User]
+    include: [User,Tag]
   }).then(tweets => {
     console.log(tweets);
     const tweetRaw = tweets.map(tweet => tweet.get({ plain: true }));
@@ -35,15 +34,25 @@ router.get("/showsessions", (req, res) => {
   res.json(req.session);
 });
 
-router.get(
-  "/profile",withAuth,(req, res) => {
+router.get("/profile",(req, res) => {
+    if(!req.session.user){
+      return res.redirect("/login")
+    }
     //if logged in, show your stuff
     //if not logged in, send a 403 Forbbiden erro
     User.findByPk(req.session.user.id, {
-      include: [Tweet]
+      include: [{
+        model:Tweet,
+        include:[Tag]
+      }]
     }).then(userData => {
-      const userRaw = userData.get({ plain: true });
-      res.render("profile", userRaw);
+      Tag.findAll({
+        order:[["name","asc"]]
+      }).then(tags=>{
+        const tagsRaw = tags.map(tag=>tag.get({plain:true}))
+        const userRaw = userData.get({ plain: true });
+        res.render("profile", {user:userRaw,tags:tagsRaw});
+      })
     });
   }
 );

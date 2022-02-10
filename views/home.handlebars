@@ -1,6 +1,11 @@
 <h1>Hello everyone!</h1>
 <ul>
 {{#each allTweets}}
-    <li><strong><a href="/user/{{User.id}}">{{User.username}}</a></strong>: {{body}} randomNum:{{randomNum}}</li>
+    <li>
+        <strong><a href="/user/{{User.id}}">{{User.username}}</a></strong>: {{body}}
+        {{#each Tags}}
+        <button>{{name}}</button>
+        {{/each}}
+        </li>
 {{/each}}
 </ul>

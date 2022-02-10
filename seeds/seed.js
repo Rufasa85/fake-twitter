@@ -31,14 +31,29 @@ const tweets = [
     },
 ]
 
+const tags = [
+    {
+        name:"catTips"
+    },
+    {
+        name:"yolo"
+    },
+    {
+        name:"blessed"
+    },
+]
+
 const sequelize = require("../config/connection");
-const {User,Tweet} = require("../models")
+const {User,Tweet,Tag} = require("../models")
 
 const seed = async ()=>{
     await sequelize.sync({force:true});
     await User.bulkCreate(users,{individualHooks:true});
-    await Tweet.bulkCreate(tweets);
-    console.log("all seeded!")
+    const dbTweets = await Tweet.bulkCreate(tweets);
+    const dbTags = await Tag.bulkCreate(tags);
+    await dbTweets[0].addTag(2);
+    await dbTags[0].addTweet(3);
+    console.log(dbTweets)
     process.exit(0);
 }
 
